@@ -83,13 +83,13 @@
         {
             "atomType": "Code",
             "name": "Code",
-            "x": 0.29828042328042326,
-            "y": 0.8138888888888889,
+            "x": 0.3413173652694611,
+            "y": 0.7833333333333333,
             "uniqueID": "1545a357-27cd-4fa9-a6dc-b4a419698cb2",
             "ioValues": [
                 {
                     "name": "number",
-                    "ioValue": 5
+                    "ioValue": 6
                 },
                 {
                     "name": "height",
@@ -98,7 +98,7 @@
             ],
             "description": "Defines a Replicad code block.",
             "codeVersion": 1,
-            "code": " \n      //Inputs:[number, height]\n      //This defines the molecules inputs and creates variables with the same names which can be referenced in the code\n      \n      let factor = 2;\n      const period = 72;\n      const amplitude = 19 / 2;\n      const xScale = period / (2 * Math.PI);\n      const nPeriods = number; // 🔁 Number of periods to repeat\n      const circumference = nPeriods * period;\n      const radius = circumference/(2*Math.PI);\n\n      console.log(\"Radius\");\n      console.log(radius);\n      \n      let shape = replicad.draw();\n      \n      for (let i = 0; i < nPeriods; i++) {\n        let offsetX = i * period;\n      \n        // First spline: 0 to π (up and back down)\n        shape = shape.smoothSplineTo(\n          [offsetX + Math.PI * xScale, 0 * amplitude],\n          {\n            startTangent: 45,         // Going up at start\n            startFactor: factor,\n            endTangent: -45,          // Coming down at π\n            endFactor: factor\n          }\n        )\n        // Second spline: π to 2π (down and back up)\n        .smoothSplineTo(\n          [offsetX + 2 * Math.PI * xScale, 0 * amplitude],\n          {\n            startTangent: -45,        // Going down at π\n            startFactor: factor,\n            endTangent: 45,           // Coming up at 2π\n            endFactor: factor\n          }\n        );\n      }\n      \n      // Add base lines and close shape\n      shape = shape\n        .lineTo([nPeriods * period, -height])  // Right-bottom corner\n        .lineTo([0, -height])                  // Left-bottom corner\n        .close();                          // Close path\n\n      const newPlane = new replicad.Plane().pivot(0, 'Y');\n      \n      //For our new geometry we need to define the tags, color, plane, etc\n      let shape2 = {\n          geometry: [shape], \n          tags: [\"aTag\"],\n          color: '#A3CE5B',\n          plane: newPlane,\n          bom: []\n      }\n      \n      //Then we can return our created shape in just the same way\n      return shape2\n      "
+            "code": " \n      //Inputs:[number, height]\n      //This defines the molecules inputs and creates variables with the same names which can be referenced in the code\n      \n      let factor = 2;\n      const period = 72;\n      const amplitude = 19 / 2;\n      const xScale = period / (2 * Math.PI);\n      const nPeriods = number; \n      const circumference = nPeriods * period;\n      const radius = circumference/(2*Math.PI);\n\n      console.log(\"Radius\");\n      console.log(radius);\n      \n      let shape = replicad.draw();\n      \n      for (let i = 0; i < nPeriods; i++) {\n        let offsetX = i * period;\n      \n        // First spline: 0 to π (up and back down)\n        shape = shape.smoothSplineTo(\n          [offsetX + Math.PI * xScale, 0 * amplitude],\n          {\n            startTangent: 45,         // Going up at start\n            startFactor: factor,\n            endTangent: -45,          // Coming down at π\n            endFactor: factor\n          }\n        )\n        // Second spline: π to 2π (down and back up)\n        .smoothSplineTo(\n          [offsetX + 2 * Math.PI * xScale, 0 * amplitude],\n          {\n            startTangent: -45,        // Going down at π\n            startFactor: factor,\n            endTangent: 45,           // Coming up at 2π\n            endFactor: factor\n          }\n        );\n      }\n      \n      // Add base lines and close shape\n      shape = shape\n        .lineTo([nPeriods * period, -height])  // Right-bottom corner\n        .lineTo([0, -height])                  // Left-bottom corner\n        .close();                          // Close path\n\n      const newPlane = new replicad.Plane().pivot(0, 'Y');\n      \n      //For our new geometry we need to define the tags, color, plane, etc\n      let shape2 = {\n          geometry: [shape], \n          tags: [\"aTag\"],\n          color: '#A3CE5B',\n          plane: newPlane,\n          bom: []\n      }\n      \n      //Then we can return our created shape in just the same way\n      return shape2\n      "
         }
     ],
     "allConnectors": [
