@@ -45,8 +45,8 @@
         {
             "atomType": "Code",
             "name": "Code",
-            "x": 0.27380952380952384,
-            "y": 0.7027777777777777,
+            "x": 0.373015873015873,
+            "y": 0.3111111111111111,
             "uniqueID": "b54466ac-9999-4cd7-a4a6-63beaa184c86",
             "ioValues": [
                 {
@@ -79,6 +79,26 @@
                 }
             ],
             "description": "Extrudes a 2D shape. Input can be negitive. "
+        },
+        {
+            "atomType": "Code",
+            "name": "Code",
+            "x": 0.29828042328042326,
+            "y": 0.8138888888888889,
+            "uniqueID": "1545a357-27cd-4fa9-a6dc-b4a419698cb2",
+            "ioValues": [
+                {
+                    "name": "number",
+                    "ioValue": 10
+                },
+                {
+                    "name": "height",
+                    "ioValue": 40
+                }
+            ],
+            "description": "Defines a Replicad code block.",
+            "codeVersion": 1,
+            "code": " \n      //Inputs:[number, height]\n      //This defines the molecules inputs and creates variables with the same names which can be referenced in the code\n      \n      const factor = 2;\nconst period = 72;\nconst amplitude = 19 / 2;\nconst nPeriods = number; // Number of periods around circle\nconst baseRadius = 100;  // Radius of base circle (adjust as needed)\nconst xScale = period / (2 * Math.PI);\nconst height = 20;       // Base height for closing shape\n\n// Convert a point on sine wave linear X to circular XY\nfunction polarTransform(x, y) {\n  const angle = (x / period) * 2 * Math.PI;   // Map linear x to angle\n  const r = baseRadius + y;                    // Radius + amplitude offset\n  return [\n    r * Math.cos(angle), \n    r * Math.sin(angle)\n  ];\n}\n\nlet shape = replicad.draw();\n\nfor (let i = 0; i < nPeriods; i++) {\n  let offsetX = i * period;\n\n  // First spline: 0 to π\n  shape = shape.smoothSplineTo(\n    polarTransform(offsetX + Math.PI * xScale, 0 * amplitude),\n    {\n      startTangent: 45,\n      startFactor: factor,\n      endTangent: -45,\n      endFactor: factor\n    }\n  )\n  // Second spline: π to 2π\n  .smoothSplineTo(\n    polarTransform(offsetX + 2 * Math.PI * xScale, 0 * amplitude),\n    {\n      startTangent: -45,\n      startFactor: factor,\n      endTangent: 45,\n      endFactor: factor\n    }\n  );\n}\n\n// Close the shape by drawing lines to the inner circle points (offset Y = -height)\nshape = shape\n  .lineTo(polarTransform(nPeriods * period, -height))\n  .lineTo(polarTransform(0, -height))\n  .close();\n\n\n      const newPlane = new replicad.Plane().pivot(0, 'Y');\n      \n      //For our new geometry we need to define the tags, color, plane, etc\n      let shape2 = {\n          geometry: [shape], \n          tags: [\"aTag\"],\n          color: '#A3CE5B',\n          plane: newPlane,\n          bom: []\n      }\n      \n      //Then we can return our created shape in just the same way\n      return shape2\n      "
         }
     ],
     "allConnectors": [
