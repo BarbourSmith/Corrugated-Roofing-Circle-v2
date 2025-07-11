@@ -25,8 +25,8 @@
         {
             "atomType": "Code",
             "name": "Code",
-            "x": 0.25,
-            "y": 0.30277777777777776,
+            "x": 0.17065868263473055,
+            "y": 0.3083333333333333,
             "uniqueID": "e48f9b50-4f43-46a8-85f0-bbd0cce9de46",
             "ioValues": [
                 {
@@ -45,8 +45,8 @@
         {
             "atomType": "Code",
             "name": "Code",
-            "x": 0.373015873015873,
-            "y": 0.3111111111111111,
+            "x": 0.3333333333333333,
+            "y": 0.28611111111111115,
             "uniqueID": "b54466ac-9999-4cd7-a4a6-63beaa184c86",
             "ioValues": [
                 {
@@ -65,8 +65,8 @@
         {
             "atomType": "Extrude",
             "name": "Extrude",
-            "x": 0.6144179894179894,
-            "y": 0.5277777777777778,
+            "x": 0.6117764471057885,
+            "y": 0.4277777777777778,
             "uniqueID": "587ac0e6-412d-408e-8ead-0730eb4fbedf",
             "ioValues": [
                 {
@@ -83,8 +83,8 @@
         {
             "atomType": "Code",
             "name": "Code",
-            "x": 0.3502994011976048,
-            "y": 0.8,
+            "x": 0.31437125748503,
+            "y": 0.7888888888888889,
             "uniqueID": "1545a357-27cd-4fa9-a6dc-b4a419698cb2",
             "ioValues": [
                 {
@@ -98,7 +98,7 @@
             ],
             "description": "Defines a Replicad code block.",
             "codeVersion": 1,
-            "code": " \n      //Inputs:[number, height]\n      //This defines the molecules inputs and creates variables with the same names which can be referenced in the code\n      \n      let factor = 2;\n      const period = 72;\n      const amplitude = 19 / 2;\n      const xScale = period / (2 * Math.PI);\n      const nPeriods = number; \n      const circumference = nPeriods * period;\n      const radius = circumference/(2*Math.PI);\n\n      console.log(\"Radius\");\n      console.log(radius);\n\n      function computeX(i, section){\n        return i*period + Math.PI * xScale*section;\n      }\n\n      function computeY(i){\n        return 0;\n      }\n      \n      let shape = replicad.draw();\n      \n      for (let i = 0; i < nPeriods; i++) {\n        let offsetX = i * period;\n      \n        // First spline: 0 to π (up and back down)\n        shape = shape.smoothSplineTo(\n          [computeX(i, 1), computeY(i)],\n          {\n            startTangent: 45,         // Going up at start\n            startFactor: factor,\n            endTangent: -45,          // Coming down at π\n            endFactor: factor\n          }\n        )\n        // Second spline: π to 2π (down and back up)\n        .smoothSplineTo(\n          [computeX(i,2), computeY(i)],\n          {\n            startTangent: -45,        // Going down at π\n            startFactor: factor,\n            endTangent: 45,           // Coming up at 2π\n            endFactor: factor\n          }\n        );\n      }\n      \n      // Add base lines and close shape\n      shape = shape\n        .lineTo([nPeriods * period, -height])  // Right-bottom corner\n        .lineTo([0, -height])                  // Left-bottom corner\n        .close();                          // Close path\n\n      const newPlane = new replicad.Plane().pivot(0, 'Y');\n      \n      //For our new geometry we need to define the tags, color, plane, etc\n      let shape2 = {\n          geometry: [shape], \n          tags: [\"aTag\"],\n          color: '#A3CE5B',\n          plane: newPlane,\n          bom: []\n      }\n      \n      //Then we can return our created shape in just the same way\n      return shape2\n      "
+            "code": " \n      //Inputs:[number, height]\n      //This defines the molecules inputs and creates variables with the same names which can be referenced in the code\n      \n      let factor = 2;\n      const period = 72;\n      const amplitude = 19 / 2;\n      const xScale = period / (2 * Math.PI);\n      const nPeriods = number; \n      const circumference = nPeriods * period;\n      const radius = circumference/(2*Math.PI);\n\n      console.log(\"Radius\");\n      console.log(radius);\n\n      function computeX(i, section){\n        const theta = 2 * Math.PI * i/number; // angle in radians\n        console.log(\"Theta\");\n        console.log(theta);\n        return i*period + Math.PI * xScale*section;\n      }\n\n      function computeY(i){\n        return 0;\n      }\n      \n      let shape = replicad.draw();\n      \n      for (let i = 0; i < nPeriods; i++) {\n        let offsetX = i * period;\n      \n        // First spline: 0 to π (up and back down)\n        shape = shape.smoothSplineTo(\n          [computeX(i, 1), computeY(i)],\n          {\n            startTangent: 45,         // Going up at start\n            startFactor: factor,\n            endTangent: -45,          // Coming down at π\n            endFactor: factor\n          }\n        )\n        // Second spline: π to 2π (down and back up)\n        .smoothSplineTo(\n          [computeX(i,2), computeY(i)],\n          {\n            startTangent: -45,        // Going down at π\n            startFactor: factor,\n            endTangent: 45,           // Coming up at 2π\n            endFactor: factor\n          }\n        );\n      }\n      \n      // Add base lines and close shape\n      shape = shape\n        .lineTo([nPeriods * period, -height])  // Right-bottom corner\n        .lineTo([0, -height])                  // Left-bottom corner\n        .close();                          // Close path\n\n      const newPlane = new replicad.Plane().pivot(0, 'Y');\n      \n      //For our new geometry we need to define the tags, color, plane, etc\n      let shape2 = {\n          geometry: [shape], \n          tags: [\"aTag\"],\n          color: '#A3CE5B',\n          plane: newPlane,\n          bom: []\n      }\n      \n      //Then we can return our created shape in just the same way\n      return shape2\n      "
         }
     ],
     "allConnectors": [
