@@ -1,13 +1,67 @@
 {
     "atomType": "Molecule",
-    "name": "Corrugated Roofing Circle v2",
+    "name": "Corrugated-Roofing-Circle-v2",
     "x": 0,
     "y": 0,
     "uniqueID": "74e97323-dbcf-4577-bf9a-c3bca8a2acee",
     "ioValues": [],
     "description": "Molecules provide an organizational structure to contain atoms. Double click on a molecule to enter it. Use the up arrow in the upper right hand corner of the screen to go up one level.",
     "topLevel": true,
-    "allAtoms": [],
+    "allAtoms": [
+        {
+            "atomType": "Output",
+            "name": "Output",
+            "x": 0.98,
+            "y": 0.5,
+            "uniqueID": "5461caf4-cd82-4e13-925c-5e0c7b3b8fd1",
+            "ioValues": [],
+            "description": "Connect geometry here to make it available in the next level up. "
+        },
+        {
+            "atomType": "Code",
+            "name": "Code",
+            "x": 0.32936507936507936,
+            "y": 0.32499999999999996,
+            "uniqueID": "e48f9b50-4f43-46a8-85f0-bbd0cce9de46",
+            "ioValues": [
+                {
+                    "name": "thickness",
+                    "ioValue": 10
+                },
+                {
+                    "name": "numBumps",
+                    "ioValue": 10
+                }
+            ],
+            "description": "Defines a Replicad code block.",
+            "codeVersion": 1,
+            "code": " \n      //Inputs:[thickness, numBumps]\n      //This defines the molecules inputs and creates variables with the same names which can be referenced in the code\n      \n      //Define a circle\n       const circleFunction = (t) => {\n\n         \n       const period = 72;\n       const circumference = numBumps * period;\n       const baseRadius = circumference / (2 * Math.PI);\n       console.log(\"Base Radius: \" + baseRadius);\n\n        t = t === 1 ? 0: t\n      \n        const length = Math.PI*2*baseRadius;\n        const amplitude = 19 / 2;\n        const sinX = t * length; // Scale  to the total length (circumference)\n        const sinY = amplitude * Math.sin((2 * Math.PI * sinX) / period)\n      \n        const angle = 2 * Math.PI * t;\n      \n        const radius = baseRadius + sinY;\n      \n        const circleX = radius * Math.cos(angle);\n        const circleY = radius * Math.sin(angle);\n      \n        const x = circleX ;\n        const y = circleY;\n      \n      \n        return [x, y];\n      };\n\n      // Step 3: Create the sinewave shape\n      const points = Math.max(200, 6*numBumps);\n      const sinewaveShape = replicad.drawParametricFunction(circleFunction, { pointsCount: points });\n  \n    \n      // Return the combined shape\n      let createdShape =  sinewaveShape.sketchOnPlane().extrude(thickness);\n\n      //This is the plane we are going to put our new shape on\n      const newPlane = new replicad.Plane().pivot(0, 'Y');\n      \n      //For our new geometry we need to define the tags, color, plane, etc\n      let shape2 = {\n          geometry: [createdShape], \n          tags: [\"aTag\"],\n          color: '#A3CE5B',\n          plane: newPlane,\n          bom: []\n      }\n      \n      //Then we can return our created shape in just the same way\n      return shape2\n      \n      \n          /**\n          To Use the Code Atom, enter your inputs to the input list a.e Inputs:[shape, height]\n          If your input is connected to another atom with a replicad geometry you can access its geometry by looking up its ID in your library. a.e library[Input1].geometry[0] \n          Use any replicad available methods to modify your geometry. Learn more about all of the available methods at \n          https://replicad.xyz/docs/introapp/UserGuide.html \n          Return a replicad object that includes geometry, color, tags and plane. \n      \n      \n          Example Code Atom:\n      \n            Inputs:[shape, x];\n      \n            let finalShape = library[shape].geometry[0].clone.translate[x,0,0]\n      \n            return {geometry: finalShape, color: library[shape].color, plane: library[shape].plane, tags: library[shape].tags }\n      \n            - See more examples at _______ \n      \n      \n          */\n      "
+        },
+        {
+            "atomType": "Code",
+            "name": "Code",
+            "x": 0.4226190476190476,
+            "y": 0.7,
+            "uniqueID": "b54466ac-9999-4cd7-a4a6-63beaa184c86",
+            "ioValues": [
+                {
+                    "name": "inputShape",
+                    "ioValue": 10
+                },
+                {
+                    "name": "dist",
+                    "ioValue": 10
+                },
+                {
+                    "name": "height",
+                    "ioValue": 10
+                }
+            ],
+            "description": "Defines a Replicad code block.",
+            "codeVersion": 1,
+            "code": " \n      //Inputs:[inputShape, dist, height]\n      //This defines the molecules inputs and creates variables with the same names which can be referenced in the code\n      \n      //Takes the address and gets the shape from the library\n      let importedShape = library[inputShape]\n      \n      //This makes a new copy of of the shape (to prevent garbage collection issues),\n      //and moves it in the X direction. Note that this will not work if the input is an assembly\n      let movedShape = importedShape.geometry[0].clone().translate([dist,0,0])\n      \n      //Console.log works for debugging to better see what is happening under the hood\n      console.log(\"Shape:\")\n      console.log(importedShape);\n      \n      //Shapes stored in the library have tags, a color, a plane, and a bill of materials like this. We don't modify them here\n      let shape1 = {\n        geometry: [movedShape],\n        tags: importedShape.tags,\n        color: importedShape.color,\n        plane: importedShape.plane,\n        bom: importedShape.bom\n      }\n      \n      //We could at this point return shape1 as a complete shape and it will be automatically written to the library for us\n      //return shape1\n      \n      //We can also create a new shape from scratch\n      let createdRectangle = replicad.drawRectangle(5,7)\n      //This is the plane we are going to put our new shape on\n      const newPlane = new replicad.Plane().pivot(0, 'Y');\n      //And we extrude the shape to make it 3D\n      let createdShape = createdRectangle.sketchOnPlane(newPlane).extrude(height)\n      \n      //For our new geometry we need to define the tags, color, plane, etc\n      let shape2 = {\n          geometry: [createdShape], \n          tags: [\"aTag\"],\n          color: '#A3CE5B',\n          plane: newPlane,\n          bom: []\n      }\n      \n      //Then we can return our created shape in just the same way\n      //return shape2\n      \n      //If we want to return both shapes at once, we can create an assembly with them\n      let anAssembly = {\n        geometry: [shape1, shape2], \n        tags: [\"aNewTag\"],\n        color: '#A3CF5B',\n        plane: newPlane,\n        bom: []\n      }\n      \n      //And we can return that in the same way\n      return anAssembly\n      \n      \n          /**\n          To Use the Code Atom, enter your inputs to the input list a.e Inputs:[shape, height]\n          If your input is connected to another atom with a replicad geometry you can access its geometry by looking up its ID in your library. a.e library[Input1].geometry[0] \n          Use any replicad available methods to modify your geometry. Learn more about all of the available methods at \n          https://replicad.xyz/docs/introapp/UserGuide.html \n          Return a replicad object that includes geometry, color, tags and plane. \n      \n      \n          Example Code Atom:\n      \n            Inputs:[shape, x];\n      \n            let finalShape = library[shape].geometry[0].clone.translate[x,0,0]\n      \n            return {geometry: finalShape, color: library[shape].color, plane: library[shape].plane, tags: library[shape].tags }\n      \n            - See more examples at _______ \n      \n      \n          */\n      "
+        }
+    ],
     "allConnectors": [],
     "unitsKey": "Unitless",
     "fileTypeVersion": 1,
