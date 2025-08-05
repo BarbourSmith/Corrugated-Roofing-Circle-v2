@@ -290,11 +290,11 @@
                 },
                 {
                     "name": "Part Name",
-                    "ioValue": "Corrugated-Roofing-Circle-v2"
+                    "ioValue": "Bend Test"
                 }
             ],
             "description": "Generates Maslow gcode from the input geometry. For single parts, generates one gcode file. For assemblies, extracts individual parts, sorts them left to right based on bounding boxes, generates gcode for each part sequentially, and concatenates the results into one file.",
-            "partName": "Corrugated-Roofing-Circle-v2"
+            "partName": "Bend Test"
         }
     ],
     "allConnectors": [
