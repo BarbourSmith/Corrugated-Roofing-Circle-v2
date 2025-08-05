@@ -7,7 +7,7 @@
     "ioValues": [
         {
             "name": "Number",
-            "ioValue": 20
+            "ioValue": 80
         }
     ],
     "description": "Molecules provide an organizational structure to contain atoms. Double click on a molecule to enter it. Use the up arrow in the upper right hand corner of the screen to go up one level.",
@@ -36,7 +36,7 @@
             "ioValues": [
                 {
                     "name": "number",
-                    "ioValue": 20
+                    "ioValue": 80
                 },
                 {
                     "name": "height",
@@ -45,7 +45,7 @@
             ],
             "description": "Defines a Replicad code block.",
             "codeVersion": 1,
-            "code": " \n      //Inputs:[number, height]\n      //This defines the molecules inputs and creates variables with the same names which can be referenced in the code\n      \n      let factor = 2;\n      const period = 72;\n      const amplitude = 19 / 2;\n      const xScale = period / (2 * Math.PI);\n      const nPeriods = number; \n      const circumference = nPeriods * period;\n      const radius = circumference/(2*Math.PI);\n\n      function computeX(fraction){\n        const theta = 2 * Math.PI *fraction; // angle in radians\n        const x = radius*Math.cos(theta);\n        return x;\n      }\n\n      function computeY(fraction){\n        const theta = 2 * Math.PI * fraction; // angle in radians\n        const y = radius*Math.sin(theta);\n        return y;\n      }\n\n      function tangentAngle(fraction, clockwise = false) {\n          const theta = 2 * Math.PI * fraction;\n          const phi = clockwise\n              ? theta - Math.PI / 2 // CW\n              : theta + Math.PI / 2; // CCW\n\n          let degrees = phi * (180 / Math.PI);\n        \n          return degrees; // radians\n      }\n      \n      let shape = replicad.draw();\n\n      \n      shape.movePointerTo([computeX(0), computeY(0)])\n      \n      for (let i = 0; i < nPeriods; i++) {\n        let oneLess = (2*i-1)/(2*number);\n        let fractionStart = i/number //The percentage of the way around the circle that this point is\n        let fractionMiddle =  (2*i+1)/(2*number);\n      \n        // First spline: 0 to Ï (up and back down)\n        shape = shape.smoothSplineTo(\n          [computeX(fractionStart), computeY(fractionStart)],\n          {\n            startTangent: tangentAngle(oneLess) + 45,         // Going up at start\n            startFactor: factor,\n            endTangent: tangentAngle(fractionStart)-45,          // Coming down at Ï\n            endFactor: factor\n          }\n        )\n        // Second spline: Ï to 2Ï (down and back up)\n        .smoothSplineTo(\n          [computeX(fractionMiddle), computeY(fractionMiddle)],\n          {\n            startTangent: tangentAngle(fractionStart)-45,        // Going down at Ï\n            startFactor: factor,\n            endTangent: tangentAngle(fractionMiddle) + 45,           // Coming up at 2Ï\n            endFactor: factor\n          }\n        );\n      }\n\n      shape = shape.smoothSplineTo(\n          [computeX(0), computeY(0)],\n          {\n            startTangent: tangentAngle((2*number-1)/(2*number))+45,        // Going down at Ï\n            startFactor: factor,\n            endTangent: tangentAngle(0) - 45,           // Coming up at 2Ï\n            endFactor: factor\n          });\n      \n      // Add base lines and close shape\n      shape = shape\n        .close();                          // Close path\n\n      const newPlane = new replicad.Plane().pivot(0, 'Y');\n      \n      //For our new geometry we need to define the tags, color, plane, etc\n      let shape2 = {\n          geometry: [shape], \n          tags: [\"aTag\"],\n          color: '#A3CE5B',\n          plane: newPlane,\n          bom: []\n      }\n      \n      //Then we can return our created shape in just the same way\n      return shape2\n      "
+            "code": " \n      //Inputs:[number, height]\n      //This defines the molecules inputs and creates variables with the same names which can be referenced in the code\n      \n      let factor = 2;\n      const period = 76;\n      const amplitude = 19 / 2;\n      const xScale = period / (2 * Math.PI);\n      const nPeriods = number; \n      const circumference = nPeriods * period;\n      const radius = circumference/(2*Math.PI);\n      const angle = 35\n\n      function computeX(fraction){\n        const theta = 2 * Math.PI *fraction; // angle in radians\n        const x = radius*Math.cos(theta);\n        return x;\n      }\n\n      function computeY(fraction){\n        const theta = 2 * Math.PI * fraction; // angle in radians\n        const y = radius*Math.sin(theta);\n        return y;\n      }\n\n      function tangentAngle(fraction, clockwise = false) {\n          const theta = 2 * Math.PI * fraction;\n          const phi = clockwise\n              ? theta - Math.PI / 2 // CW\n              : theta + Math.PI / 2; // CCW\n\n          let degrees = phi * (180 / Math.PI);\n        \n          return degrees; // radians\n      }\n      \n      let shape = replicad.draw();\n\n      \n      shape.movePointerTo([computeX(0), computeY(0)])\n      \n      for (let i = 0; i < nPeriods; i++) {\n        let oneLess = (2*i-1)/(2*number);\n        let fractionStart = i/number //The percentage of the way around the circle that this point is\n        let fractionMiddle =  (2*i+1)/(2*number);\n      \n        // First spline: 0 to ÃÂ (up and back down)\n        shape = shape.smoothSplineTo(\n          [computeX(fractionStart), computeY(fractionStart)],\n          {\n            startTangent: tangentAngle(oneLess) + angle,         // Going up at start\n            startFactor: factor,\n            endTangent: tangentAngle(fractionStart)-angle,          // Coming down at ÃÂ\n            endFactor: factor\n          }\n        )\n        // Second spline: ÃÂ to 2ÃÂ (down and back up)\n        .smoothSplineTo(\n          [computeX(fractionMiddle), computeY(fractionMiddle)],\n          {\n            startTangent: tangentAngle(fractionStart)-angle,        // Going down at ÃÂ\n            startFactor: factor,\n            endTangent: tangentAngle(fractionMiddle) + angle,           // Coming up at 2ÃÂ\n            endFactor: factor\n          }\n        );\n      }\n\n      shape = shape.smoothSplineTo(\n          [computeX(0), computeY(0)],\n          {\n            startTangent: tangentAngle((2*number-1)/(2*number))+angle,        // Going down at ÃÂ\n            startFactor: factor,\n            endTangent: tangentAngle(0) - angle,           // Coming up at 2ÃÂ\n            endFactor: factor\n          });\n      \n      // Add base lines and close shape\n      shape = shape\n        .close();                          // Close path\n\n      const newPlane = new replicad.Plane().pivot(0, 'Y');\n      \n      //For our new geometry we need to define the tags, color, plane, etc\n      let shape2 = {\n          geometry: [shape], \n          tags: [\"aTag\"],\n          color: '#A3CE5B',\n          plane: newPlane,\n          bom: []\n      }\n      \n      //Then we can return our created shape in just the same way\n      return shape2\n      "
         },
         {
             "atomType": "Input",
@@ -56,6 +56,82 @@
             "ioValues": [],
             "description": "Adds an input to the parent molecule. If the parent molecule is the top level of the project then the input will be available when the project is shared or imported into another project. Name is editable",
             "type": "number"
+        },
+        {
+            "atomType": "Circle",
+            "name": "Circle",
+            "x": 0.38227513227513227,
+            "y": 0.8245125348189415,
+            "uniqueID": "4e749e33-8b9e-4373-8e6b-2d92923b3ef9",
+            "ioValues": [
+                {
+                    "name": "diameter",
+                    "ioValue": 1800
+                }
+            ],
+            "description": "Creates a new circle."
+        },
+        {
+            "atomType": "Difference",
+            "name": "Difference",
+            "x": 0.5396825396825397,
+            "y": 0.7298050139275767,
+            "uniqueID": "24e46dde-6bb8-49dc-8e06-50e0623bc420",
+            "ioValues": [
+                {
+                    "name": "geometry1",
+                    "ioValue": "1545a357-27cd-4fa9-a6dc-b4a419698cb2"
+                },
+                {
+                    "name": "geometry2",
+                    "ioValue": "4e749e33-8b9e-4373-8e6b-2d92923b3ef9"
+                }
+            ],
+            "description": "Subtracts shape two from shape one."
+        },
+        {
+            "atomType": "Rectangle",
+            "name": "Rectangle",
+            "x": 0.6428571428571428,
+            "y": 0.8022284122562675,
+            "uniqueID": "891352af-f2a9-47d7-ae31-66813bbbb83e",
+            "ioValues": [
+                {
+                    "name": "x length",
+                    "ioValue": 700
+                },
+                {
+                    "name": "y length",
+                    "ioValue": 2000
+                }
+            ],
+            "description": "Creates a new rectangle."
+        },
+        {
+            "atomType": "Move",
+            "name": "Move",
+            "x": 0.744047619047619,
+            "y": 0.8161559888579387,
+            "uniqueID": "ad6c25c3-3e98-4246-8671-8a2a79ae6c0c",
+            "ioValues": [
+                {
+                    "name": "geometry",
+                    "ioValue": "891352af-f2a9-47d7-ae31-66813bbbb83e"
+                },
+                {
+                    "name": "xDist",
+                    "ioValue": 0
+                },
+                {
+                    "name": "yDist",
+                    "ioValue": 0
+                },
+                {
+                    "name": "zDist",
+                    "ioValue": 1600
+                }
+            ],
+            "description": "Moves a shape laterally in X, Y, Z."
         }
     ],
     "allConnectors": [
@@ -67,11 +143,32 @@
             "ap2ID": "5461caf4-cd82-4e13-925c-5e0c7b3b8fd1"
         },
         {
+            "ap1Name": "geometry",
+            "ap2Name": "geometry1",
+            "ap2Primary": false,
+            "ap1ID": "1545a357-27cd-4fa9-a6dc-b4a419698cb2",
+            "ap2ID": "24e46dde-6bb8-49dc-8e06-50e0623bc420"
+        },
+        {
             "ap1Name": "number or geometry",
             "ap2Name": "number",
             "ap2Primary": false,
             "ap1ID": "952fcb21-a668-438c-99a9-36cfff9e2465",
             "ap2ID": "1545a357-27cd-4fa9-a6dc-b4a419698cb2"
+        },
+        {
+            "ap1Name": "geometry",
+            "ap2Name": "geometry2",
+            "ap2Primary": false,
+            "ap1ID": "4e749e33-8b9e-4373-8e6b-2d92923b3ef9",
+            "ap2ID": "24e46dde-6bb8-49dc-8e06-50e0623bc420"
+        },
+        {
+            "ap1Name": "geometry",
+            "ap2Name": "geometry",
+            "ap2Primary": true,
+            "ap1ID": "891352af-f2a9-47d7-ae31-66813bbbb83e",
+            "ap2ID": "ad6c25c3-3e98-4246-8671-8a2a79ae6c0c"
         }
     ],
     "unitsKey": "Unitless",
